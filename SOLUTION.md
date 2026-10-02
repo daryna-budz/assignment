@@ -49,4 +49,6 @@
 
 ## Anything else you'd like us to know
 
--
+- Resetting test data before each test would make the suite more reliable: tests that rely on seeded tasks fail if that data is changed, e.g. by manual exploration with the dev servers still running.
+
+Thank you for the opportunity! :)
