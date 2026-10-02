@@ -22,4 +22,14 @@ test.describe('Search', () => {
     await taskManager.searchInput.fill('');
     await expect(taskManager.taskRow('Buy groceries')).toBeVisible();
   });
+
+  test('shows an empty state when no tasks match the search', async ({ page }) => {
+    const taskManager = new TaskManagerPage(page);
+    await taskManager.goto();
+
+    await taskManager.search('nonexistent-task-abracadabra')
+
+    await expect(taskManager.taskRows).toHaveCount(0);
+    await expect(taskManager.emptyState).toHaveText('No tasks found.');
+  });
 });

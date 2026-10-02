@@ -18,12 +18,16 @@ export class TaskManagerPage {
   readonly newTaskButton: Locator;
   readonly searchInput: Locator;
   readonly formModal: Locator;
+  readonly emptyState: Locator;
+  readonly taskRows: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.newTaskButton = page.getByTestId('new-task-btn');
     this.searchInput = page.getByTestId('search-input');
     this.formModal = page.getByTestId('task-form-modal');
+    this.emptyState = page.getByTestId("empty-state");
+    this.taskRows = page.locator('[data-testid^="task-item-"]');
   }
 
   async goto() {
@@ -86,6 +90,6 @@ export class TaskManagerPage {
   }
 
   async search(term: string) {
-    await this.page.getByTestId('task-search-input').fill(term);
+    await this.searchInput.fill(term);
   }
 }
