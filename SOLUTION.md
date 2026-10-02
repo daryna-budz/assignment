@@ -29,10 +29,23 @@
 
 ## Task D — Bug / usability / improvement report
 
-- **What I observed:**
-- **Steps to reproduce (if applicable):**
-- **Why it matters:**
-- **Suggested fix or improvement:**
+### 1. Tasks are deleted immediately, with no confirmation or undo (usability)
+
+- **What I observed:** Clicking the delete button removes the task instantly. There is no confirmation dialog and no way to undo.
+- **Steps to reproduce:**
+  1. Run the app (`npm run api`, `npm run dev`) and open http://localhost:5173.
+  2. Click the delete button on any task (e.g. "Buy groceries").
+  3. The task disappears immediately and is permanently removed from the API.
+- **Why it matters:** Delete is a destructive, irreversible action, and the delete button sits right next to other row controls (edit, status). A single misclick causes permanent data loss, and the user has no way to recover the task.
+- **Suggested fix or improvement:** Add a confirmation step before deleting (a modal like "Delete 'Buy groceries'? This can't be undone."), or show an "Undo" toast for a few seconds before the deletion is committed. Note: if a confirmation dialog is added, the existing `deleteTask()` helper in `TaskManagerPage.ts` would need to confirm it, and a new test could cover the "cancel" path to make sure the task is kept.
+
+### 2. The API accepts invalid task data (improvement)
+
+- **What I observed:** The form correctly blocks an empty or whitespace-only title ("Title is required"), but the API itself has no validation. A direct request creates a task with an empty title and a status that doesn't exist:
+  `curl -X POST http://localhost:3001/tasks -H "Content-Type: application/json" -d '{"title":"","status":"Banana"}'`
+  returns a created task `{ "title": "", "status": "Banana", "id": "..." }`, also without `description` or `createdAt`, which the `Task` type in `app/src/types.ts` requires.
+- **Why it matters:** I understand json-server is a mock and isn't expected to validate. But in a real backend, client-side validation alone isn't enough: any other client, script or bug can write data that breaks the app's assumptions (an unknown status, a missing required field).
+- **Suggested fix or improvement:** Validate on the server: require a non-empty trimmed `title`, restrict `status` to Open / In Progress / Done, and return `400 Bad Request` with a clear error message for invalid payloads. Once that exists, negative API tests should cover it (e.g. "POST /tasks with an empty title returns 400").
 
 ## Anything else you'd like us to know
 
