@@ -14,8 +14,8 @@
 
 ## Task B — New test
 
-- **Scenario covered:**
-- **Why this scenario matters / why it was missing:**
+- **Scenario covered:** Searching for a term that matches no tasks shows the empty state. The test (`tests/e2e/search.spec.ts`) verifies that no task rows are rendered and that the "No tasks found." message is displayed. I added `emptyState` and `taskRows` locators to `TaskManagerPage` so the test uses the Page Object instead of raw selectors.
+- **Why this scenario matters / why it was missing:** The existing search tests only cover the happy path and clearing the search. The "no results" edge case is common in real usage, and without a clear message users can't tell whether search failed or nothing matched. This test also exercises the `search()` method fixed in Task A, so a regression in that locator would now be caught.
 
 ## Task C — API validation
 
