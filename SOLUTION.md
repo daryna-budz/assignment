@@ -19,7 +19,13 @@
 
 ## Task C — API validation
 
-- **What the new API test verifies:**
+- **What the new API test verifies:** The test sends `POST /tasks` with the same payload shape the app's client sends (`title`, `description`, `status`, `createdAt`). It checks that:
+  - the response status is `201 Created`;
+  - the response body has exactly the expected shape: a server-generated string `id` plus the submitted fields, with nothing missing or unexpected (matching the `Task` type in `app/src/types.ts`);
+  - `title`, `description` and `status` match what was submitted;
+  - the task is actually persisted (a follow-up `GET /tasks/:id` returns the same object).
+
+  The test deletes the created task at the end so it doesn't affect other tests.
 
 ## Task D — Bug / usability / improvement report
 
