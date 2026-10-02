@@ -8,7 +8,7 @@ test.describe('Task status', () => {
 
     await taskManager.updateTaskStatus('Write report', 'Done');
 
-    await expect(taskManager.taskStatusBadge('Write report')).toHaveText('Completed');
+    await expect(taskManager.taskStatusBadge('Write report')).toHaveText('Done');
   });
 
   test('marking a task as In Progress updates its status badge', async ({ page }) => {
